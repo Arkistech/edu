@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="Arkis tech logo 2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="Arkis tech logo 2.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARKIS Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            background: #f4f4f4;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar img {
+            margin-right: 15px;
+        }
+
+        .navbar a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0px;
+            width: 0;
+            height: 0px;
+            background: #007BFF;
+            transition: width 0.3s ease;
+        }
+
+        .navbar a:hover::after {
+            width: 100%;
+        }
+
+        .navbar a:hover {
+            color: #007BFF;
+        }
+
+        .menu-btn {
+            position: relative;
+            width: 30px;
+            height: 20px;
+            margin-left: auto;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1002;
+        }
+
+        .menu-btn span {
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: #333;
+            border-radius: 3px;
+            left: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-btn span:nth-child(1) { top: 0; }
+        .menu-btn span:nth-child(2) { top: 10px; }
+        .menu-btn span:nth-child(3) { top: 20px; }
+
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .sidebar {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.08);
+            padding: 50px 30px 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            margin: 8px 0;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #007BFF;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar a:hover::after {
+            width: 100%;
+        }
+
+        .sidebar a i {
+            width: 30px;
+            font-size: 1.1rem;
+            color: #007BFF;
+            margin-right: 10px;
+        }
+
+        .sidebar .admin {
+            margin-top: auto;
+            background: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
+            font-weight: 600;
+        }
+
+        .container {
+            padding: 100px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Team Section Styles */
+        .team-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .team-section h1 {
+            font-size: 2.8rem;
+            color: #104982;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .team-section h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 2px;
+        }
+
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .team-member {
+            flex: 1 1 300px;
+            max-width: 300px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid #e3f8ff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-member h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            color: #007BFF;
+            font-weight: 600;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .team-member p {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .modern-footer {
+    background: linear-gradient(45deg, #f25fff, #88f9ef);
+    background-size: 300% 300%;
+    padding: 40px 20px 20px;
+    border-top: 1px solid #e9ecef;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: gradientAnimation 8s infinite alternate ease-in-out;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.footer-columns {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    gap: 60px;
+    justify-content: center;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-heading {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    display: inline-block;
+}
+
+.social-handles, .contact-methods {
+    display: flex;
+    flex-direction: column;
+    padding-left: 55px;
+    gap: 18px;
+}
+
+.social-handle, .contact-method {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #4a5568;
+    transition: all 0.3s ease;
+}
+
+.social-handle:hover, .contact-method:hover {
+    color: #3498db;
+    transform: translateX(5px);
+}
+
+.social-handle i, .contact-method i {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .footer-columns {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .footer-col {
+        text-align: center;
+    }
+    
+    .social-handle, .contact-method {
+        justify-content: center;
+    }
+    
+    .footer-heading {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}
+
+
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #000000;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+.icon {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+.icon::before,
+.icon::after {
+  content: '';
+  position: absolute;
+  background: #333;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Initial plus shape */
+.icon::before {
+  width: 24px;
+  height: 4px;
+  top: 23px;
+  left: 13px;
+}
+
+.icon::after {
+  width: 4px;
+  height: 24px;
+  top: 13px;
+  left: 23px;
+}
+
+/* Active X shape */
+.icon.active {
+  transform: rotate(180deg);
+}
+
+.icon.active::before {
+  transform: rotate(45deg);
+  width: 30px;
+  left: 10px;
+  top: 23px;
+}
+
+
+.icon.active::after {
+  transform: rotate(-45deg);
+  height: 30px;
+  left: 23px;
+  top: 10px;
+}
+.navbar-text {
+  margin-left: 5px; 
+  margin-right: 20px; 
+  font-size: 16px; 
+  color: #333;
+  white-space: nowrap;
+  text-align: left;
+}
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar a {
+                display: none;
+            }
+
+            .container {
+                padding: 80px 20px 30px;
+            }
+
+            .team-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .team-member {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .member-image {
+                width: 180px;
+                height: 180px;
+            }
+
+            .footer-columns {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .footer-col {
+                text-align: center;
+            }
+            
+            .social-handle, .contact-method {
+                justify-content: center;
+            }
+            
+            .footer-heading {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+        }
+        .email-link {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Keeps the text color consistent */
+}
+
+.email-link:hover {
+    text-decoration: underline; /* Optional: Underline on hover */
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="L2.svg" alt="Logo" width="40" height="40">
+        <span class="navbar-text"><strong>Arkis Tech</strong></span>
+        <button class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="Home.html"><i class="fas fa-home"></i>Home</a>
+        <a href="Home.html" id="aboutLink"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="The-Team.html"><i class="fas fa-users"></i>The Team</a>
+        <a href="Common-Issues.html"><i class="fas fa-tools"></i>Common Issues</a>
+        <a href="The-Journey.html"><i class="fas fa-route"></i>The Journey</a>
+        <a href="Calander.html"><i class="fas fa-calendar-alt"></i>Calendar</a>
+        <a href="Admin.html" class="admin"><i class="fas fa-lock"></i>Admin Login</a>
+    </div>
+
+    <div class="container">
+        <div class="team-section">
+            <h1>Our Team</h1>
+            
+            <!-- Top Row - 2 Members -->
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="Ah.png" alt="Team Member 1">
+                    </div>
+                    <h3>Ahmed Abdelmoghith</h3>
+                    <div class="member-role">Leader</div>
+                    <p>I was responsible for:</p>
+                    <p>Creating the team</p>
+                    <p>Designing the logo</p>
+                    <p>Designing the website code</p>
+                    <p>Assigning tasks</p>
+                    <p>Setting goals for the program</p>
+                    <p>Repairing devices</p>
+                    <p>(Front-end and Back-end)</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="Khalid.png" alt="Team Member 2">
+                    </div>
+                    <h3>Khalid Hamada</h3>
+                    <div class="member-role">Web Developer</div>
+                    <p>I was responsible for:</p>
+                    <p>Designing the website code</p>
+                    <p>Debugging the website code</p>
+                    <p>Planning the website code</p>
+                    <p>(Front-end and Back-end)</p>
+                </div>
+            </div>
+
+            <!-- Bottom Row - 3 Members -->
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="HD.png" alt="Team Member 3">
+                    </div>
+                    <h3>Hussain Ali</h3>
+                    <div class="member-role">Researcher</div>
+                    <p>I was responsible for:</p>
+                    <p>Finding Bugs</p>
+                    <p>Finding reliable repair videos</p>
+                    <p>Finding reliable repair articles</p>
+                    <p>Testing the website code</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="Abd.png" alt="Team Member 4">
+                    </div>
+                    <h3>Abdulrahman Alababinah</h3>
+                    <div class="member-role">Social Media Manager</div>
+                    <p>I was responsible for:</p>
+                    <p>Social media account</p>
+                    <p>Social media posts</p>
+                    <p>E-mails from students and teachers</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="HuA.png" alt="Team Member 5">
+                    </div>
+                    <h3>Hussain Alsaleh</h3>
+                    <div class="member-role"> Technician</div>
+                    <p>I was responsible for:</p>
+                    <p>On-site support repairs</p>
+                    <p>Recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer class="modern-footer">
+        <div class="footer-columns">
+            <!-- Social Media Column -->
+            <div class="footer-col social-col">
+                <h3 class="footer-heading">Follow Us</h3>
+                <div class="social-handles">
+                    <div class="social-handle">
+                        <i class="fab fa-instagram"></i>
+                        <a href="https://www.instagram.com/Arkistech?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="email-link">ArkisTech</a>
+                    </div>
+                    <div class="social-handle">
+                        <i class="fab fa-instagram"></i>
+                        <a href="https://www.instagram.com/arkis1997?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="email-link">Arkis1997</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-col footer-section branding">
+                <img src="Arkis tech logo 2.png" alt="Arkis Tech Logo" width="180" height="180">
+                <div class="established">Est. 2024</div>
+            </div>
+            
+            <!-- Contact Column -->
+            <div class="footer-col contact-col">
+                <h3 class="footer-heading">Contact Us</h3>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ArkisTech@arkis.edu.bh" target="_blank" class="email-link">ArkisTech@arkis.edu.bh</a>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-headset"></i>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=IT@arkis.edu.bh" target="_blank" class="email-link">IT@arkis.edu.bh</a>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-at"></i>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ArkisTech25@gmail.com" target="_blank" class="email-link">ArkisTech25@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle sidebar menu
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            menuBtn.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+                menuBtn.classList.remove('active');
+            }
+        });
+
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll to about section
+        document.getElementById("aboutLink").addEventListener("click", function (e) {
+            e.preventDefault();
+            document.querySelector(".about-section").scrollIntoView({ behavior: "smooth" });
+        });
+
+        // Initialize menu button
+        const menuBtn = document.querySelector('.menu-btn');
+        menuBtn.addEventListener('click', toggleMenu);
+    </script>
+</body>
+</html>
