@@ -1,0 +1,39 @@
+name: Deploy to Production
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/arkis-tech
+            git pull origin main
+            npm install --production
+            # Create .env file securely
+            cat <<EOF > .env
+            CLIENT_ID=${{ secrets.CLIENT_ID }}
+            CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+            REDIRECT_URI=${{ secrets.REDIRECT_URI }}
+            ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+            EMAIL_NAME="${{ secrets.EMAIL_NAME }}"
+            PORT=443
+            EOF
+            pm2 restart Server.js
