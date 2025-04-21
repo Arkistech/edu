@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARKIS Tech</title>
+    <meta name="description" content="ARKIS Tech | Student-Led Tech Support & Repair – Learn to fix your own devices with ARKIS Tech, a hands-on program by students, for students and all the ARKIS community. We offer expert tips, tutorials, and real solutions for phones, laptops, and files. Save money, reduce e-waste, and take control of your tech—fast, free, and reliable.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="Arkis tech logo 2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="Arkis tech logo 2.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            background: #f4f4f4;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar img {
+            margin-right: 15px;
+        }
+
+        .email-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .navbar a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0px;
+            width: 0;
+            height: 0px;
+            background: #007BFF;
+            transition: width 0.3s ease;
+        }
+
+        .navbar a:hover::after {
+            width: 100%;
+        }
+
+        .navbar a:hover {
+            color: #007BFF;
+        }
+
+        .menu-btn {
+            position: relative;
+            width: 30px;
+            height: 20px;
+            margin-left: auto;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1002;
+        }
+
+        .menu-btn span {
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: #333;
+            border-radius: 3px;
+            left: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-btn span:nth-child(1) { top: 0; }
+        .menu-btn span:nth-child(2) { top: 10px; }
+        .menu-btn span:nth-child(3) { top: 20px; }
+
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .sidebar {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.08);
+            padding: 50px 30px 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            margin: 8px 0;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #007BFF;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar a:hover::after {
+            width: 100%;
+        }
+
+        .sidebar a i {
+            width: 30px;
+            font-size: 1.1rem;
+            color: #007BFF;
+            margin-right: 10px;
+        }
+
+        .sidebar .admin {
+            margin-top: auto;
+            background: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
+            font-weight: 600;
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('h3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-top: 60px; /* Adjusted to account for navbar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .squares {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .square {
+            flex: 1 1 300px;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            font-weight: bold;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            overflow: hidden;
+            background-color: #ffffff;
+            animation: bounceIn 0.8s ease-in-out;
+        }
+
+        @keyframes bounceIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .square:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image-wrapper .details {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            box-sizing: border-box;
+            transition: bottom 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-wrapper:hover img {
+            transform: translateY(-100%);
+        }
+
+        .image-wrapper:hover .details {
+            bottom: 0;
+        }
+
+        .about-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-margin-top: 80px;
+            background: #e3f8ff;
+            padding: 40px;
+            margin-top: 60px;
+            margin-bottom: 0px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .about-section:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .about-section img {
+            width: 250px;
+            height: auto;
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-section img:hover {
+            transform: scale(1.05);
+        }
+
+        .about-content {
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .about-content h2 {
+            color: #d100d1;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .about-content button {
+            background: rgb(255, 0, 183);
+            color: rgb(0, 0, 0);
+            border: none;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 16px;
+            transition: transform 0.2s ease;
+            cursor: pointer; /* nice to have too */
+        }
+
+        .about-content button:hover {
+            transform: scale(1.05);
+            text-decoration: none;  
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .services-section {
+            max-width: 1280px;
+            margin: 4rem auto;
+            transition: opacity 0.3s ease-out;
+            border-radius: 16px;
+            padding: 0 2rem;
+        }
+
+        .services-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .services-heading h2 {
+            font-size: 2.8rem;
+            color: #104982;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .services-heading h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            border-radius: 16px;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .service-card {
+            margin: 0 auto;
+            width: 100%;
+            border-radius: 16px;
+            max-width: 500px;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: opacity 0.3s ease-out;
+            cursor: pointer;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header.active {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+
+        .card-header.active .service-title,
+        .card-header.active .toggle-icon::before,
+        .card-header.active .toggle-icon::after {
+            color: white;
+        }
+
+        .service-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+            font-size: 1.2rem;
+        }
+
+        .toggle-icon {
+            display: inline-block;
+            font-size: 20px;
+            color: #434344;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: transform 0.5s ease;
+            user-select: none;
+        }
+
+        .service-card.toggled .toggle-icon {
+            transform: rotate(360deg);
+        }
+
+        .card-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .card-content.active {
+            max-height: 1000px;
+            padding: 1.5rem;
+            opacity: 1;
+        }
+
+        .service-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .service-details.active {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .service-details p{
+            text-align: left;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .service-details ul{
+            text-align: left;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .service-details strong {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 0;
+            text-align: left;
+            transform: translateY(-10px);
+        }
+
+        .service-details.active p{
+            text-align: left;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .service-details.active ul{
+            text-align: left;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .service-details.active strong {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 1;
+            text-align: left;
+            transform: translateY(0);
+        }
+
+        .service-details ul {
+            list-style: none;
+            padding: 0;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .service-details li {
+            padding: 0.8rem;
+            text-align: left;
+            margin: 0.5rem 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .service-details li::before {
+            content: '◉';
+            position: absolute;
+            left: 1rem;
+            color: #6366f1;
+            font-weight: bold;
+        }
+
+        .modern-footer {
+            background: linear-gradient(45deg, #f25fff, #88f9ef);
+            background-size: 300% 300%;
+            padding: 40px 20px 20px;
+            border-top: 1px solid #e9ecef;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: gradientAnimation 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .footer-columns {
+            display: flex;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 60px;
+            justify-content: center;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-heading {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+        }
+
+        .social-handles, .contact-methods {
+            display: flex;
+            flex-direction: column;
+            padding-left: 85px;
+            gap: 18px;
+        }
+
+        .social-handle, .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #4a5568;
+            transition: all 0.3s ease;
+        }
+
+        .social-handle:hover, .contact-method:hover {
+            color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .social-handle i, .contact-method i {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #000000;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .icon {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .icon:hover {
+            transform: scale(1.1);
+        }
+
+        .icon::before,
+        .icon::after {
+            content: '';
+            position: absolute;
+            background: #333;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .icon::before {
+            width: 24px;
+            height: 4px;
+            top: 23px;
+            left: 13px;
+        }
+
+        .icon::after {
+            width: 4px;
+            height: 24px;
+            top: 13px;
+            left: 23px;
+        }
+
+        .icon.active {
+            transform: rotate(180deg);
+        }
+
+        .icon.active::before {
+            transform: rotate(45deg);
+            width: 30px;
+            left: 10px;
+            top: 23px;
+        }
+
+        .icon.active::after {
+            transform: rotate(-45deg);
+            height: 30px;
+            left: 23px;
+            top: 10px;
+        }
+        
+        .navbar-text {
+            margin-left: 5px; 
+            margin-right: 20px; 
+            font-size: 16px; 
+            color: #333;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .hero {
+                height: 70vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar a {
+                display: none;
+            }
+
+            .hero {
+                height: 60vh;
+                margin-top: 60px;
+            }
+
+            .square {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .services-heading h2 {
+                font-size: 2.2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-columns {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .footer-col {
+                text-align: center;
+            }
+            
+            .social-handle, .contact-method {
+                justify-content: center;
+            }
+            
+            .footer-heading {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            
+            .social-handles, .contact-methods {
+                padding-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 50vh;
+            }
+            
+            .about-section {
+                padding: 20px;
+            }
+            
+            .about-section img {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="L2.svg" alt="Logo" width="40" height="40">
+        <span class="navbar-text"><strong>ARKIS Tech</strong></span>
+        <button class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="#" id="aboutLink"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="The-Team.html"><i class="fas fa-users"></i>The Team</a>
+        <a href="Common-Issues.html"><i class="fas fa-tools"></i>Common Issues</a>
+        <a href="The-Journey.html"><i class="fas fa-route"></i>The Journey</a>
+        <a href="Calander.html"><i class="fas fa-calendar-alt"></i>Calendar</a>
+        <a href="Admin.html" class="admin"><i class="fas fa-lock"></i>Admin Login</a>
+    </div>
+
+    <div class="hero">
+        <!-- Hero content can be added here if needed -->
+    </div>
+    
+    <button id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div class="container">
+        <div class="squares">
+            <a href="Common-Issues.html" class="square">
+                <div class="image-wrapper">
+                    <img src="i.gif" alt="Common Issues">
+                    <div class="details">
+                        <p>Find solutions to frequent technical problems for phones, laptops, and more.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="Calander.html" class="square">
+                <div class="image-wrapper">
+                    <img src="c.gif" alt="Calendar">
+                    <div class="details">
+                        <p>Stay up-to-date with our calendar of events and workshops.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="The-Journey.html" class="square">
+                <div class="image-wrapper">
+                    <img src="J.gif" alt="The Journey">
+                    <div class="details">
+                        <p>Explore our journey and how ARKIS Tech came to be.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="about-section">
+            <img src="Arkis tech logo 2.png" alt="Arkis Tech Logo">
+            <div class="about-content">
+                <h2>About us</h2>
+                <p>ARKIS Tech supports students and teachers with any hardware or software issues. Our goal is to extend the lifespan of devices by providing expert troubleshooting, repair, and maintenance guidance, which promotes sustainable practices. By keeping devices in good condition and improving their performance, we reduce the need for unnecessary replacements, minimizing electronic waste. We strive to build confidence in using technology and encourage everyone to care for their devices, ensuring long-term use.</p>
+                <button onclick="window.location.href='The-Team.html'"><strong>Meet the Team</strong></button>
+                </div>
+        </div>
+    </div>
+
+    <div class="services-section">
+        <div class="services-heading">
+            <h2>Our Technical Services</h2>
+            <p>Expert solutions for all your needs</p>
+        </div>
+    
+        <div class="services-grid">
+            <!-- Data Recovery & Erasure -->
+            <div class="service-card">
+                <div class="card-header">
+                    <div class="service-title">
+                        <div class="service-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        Data Recovery & Erasure
+                    </div>
+                        <span class="toggle-icon">+</span>
+                                          </div>
+                <div class="card-content">
+                    <div class="service-details">
+                        <p>Recover lost data from any device or securely erase sensitive information with military-grade wiping algorithms.</p>
+                        <br>
+                        <p>We specialise in recovering lost data from smartphones, iPads, and laptops. Additionally, we provide secure data erasure services to ensure your sensitive information is completely removed before selling or disposing of your devices.</p>
+                        <br>
+                        <p>We also specialise in HDD/SDD/USB recovery for lost data on both MacOS and Windows systems. Our services address issues such as drive failures and corrupted files, ensuring that your important data is retrieved whenever possible.</p>
+                        <br>
+                        <ul>
+                            <li>Smartphone & laptop recovery</li>
+                            <li>SSD/HDD diagnostics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Device Repairs & Password Bypass -->
+            <div class="service-card">
+                <div class="card-header">
+                    <div class="service-title">
+                        <div class="service-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        Device Repairs & Password Bypass
+                    </div>
+                        <span class="toggle-icon">+</span>
+                                          </div>
+                <div class="card-content">
+                    <div class="service-details">
+                        <p>Our repair services cover a wide range of issues for iPhones, iPads, and laptops. We address application errors, system crashes, and other functionality problems to restore your device to optimal working condition.</p>
+                        <ul>
+                            <li>Black screen repair</li>
+                            <li>OTA update failures</li>
+                            <li>Boot loop problems</li>
+                            <li>Stuck at logo screens (e.g., Samsung logo)</li>
+                            <li>App crashes and forced terminations</li>
+                            <li>Bricked devices</li>
+                            <li>Devices not updating or turning on/off</li>
+                            <li>Software upgrades and downgrades</li>
+                            <li>Backup and transfer services</li>
+                            <li>Device restoration</li>
+                        </ul>
+                        <p>We provide password bypass services for locked Androids, iPhones, laptops, and iPads, allowing you to regain access to your device without data loss.</p>
+                        <br>
+                        <p><strong>"Proof of ownership required for all repairs"</strong></p>
+                        <p><strong>"Submit Proof of Purchase"</strong></p>
+                        <p><strong>"Signing Consent Forms"</strong></p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Storage Management & Software Services -->
+            <div class="service-card">
+                <div class="card-header">
+                    <div class="service-title">
+                        <div class="service-icon">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        Storage Management & Software Services
+                    </div>
+                        <span class="toggle-icon">+</span>                          
+                </div>
+                <div class="card-content">
+                    <div class="service-details">
+                        <p>Our storage management services optimise smartphone, iPad, and laptop space. We also provide backup solutions and help remove duplicate data to enhance device performance and save valuable storage.</p>
+                        <br>
+                        <p>We offer software updates for Windows. This includes Windows 10 & 11 reinstallation (Pro/Home, 32/64/82-bit) and upgrades to ensure your devices run smoothly and securely with the latest features.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Laptop Driver Installations & Parts Replacements -->
+            <div class="service-card">
+                <div class="card-header">
+                    <div class="service-title">
+                        <div class="service-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        Laptop Driver Installations & Parts Replacements
+                    </div>
+                        <span class="toggle-icon">+</span>
+                </div>
+                <div class="card-content">
+                    <div class="service-details">
+                        <p>Our team provides installation of latest essential drivers for Windows laptops and desktops. This ensures that all components work correctly and efficiently, preventing hardware conflicts and improving system stability.</p>
+                        <br>
+                        <p>We offer simple hardware replacements for laptops and desktops, including RAM and storage upgrades. These enhancements can significantly boost your device's speed and overall performance, making them run like new.</p>
+                        <br>
+                        <p><strong>"Parts Must be Provided by Student/Teacher"</strong></p>
+                        <p><strong>"Signing Consent Forms"</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+        <!-- Footer -->
+        <footer class="modern-footer">
+            <div class="footer-columns">
+                <!-- Social Media Column -->
+                <div class="footer-col social-col">
+                    <h3 class="footer-heading">Follow Us</h3>
+                    <div class="social-handles">
+                        <div class="social-handle">
+                            <i class="fab fa-instagram"></i>
+                            <a href="https://www.instagram.com/Arkistech?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="email-link">ArkisTech</a>
+                        </div>
+                        <div class="social-handle">
+                            <i class="fab fa-instagram"></i>
+                            <a href="https://www.instagram.com/arkis1997?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                                target="_blank" class="email-link">Arkis1997</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section branding">
+                    <img src="Arkis tech logo 2.png" alt="Arkis Tech Logo" width="180" height="180">
+                    <div class="established">Est. 2024</div>
+                </div>
+    
+                <!-- Contact Column -->
+                <div class="footer-col contact-col">
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ArkisTech@arkis.edu.bh" target="_blank"
+                                class="email-link">arkistech@arkis.edu.bh</a>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-headset"></i>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=IT@arkis.edu.bh" target="_blank"
+                                class="email-link">it@arkis.edu.bh</a>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-at"></i>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ArkisTech25@gmail.com" target="_blank"
+                                class="email-link">arkistech25@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+        <script>
+            function toggleMenu() {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.menu-btn');
+                menuBtn.classList.toggle('active');
+                sidebar.classList.toggle('active');
+            }
+    
+            document.addEventListener('click', (e) => {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.querySelector('.menu-btn');
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                    menuBtn.classList.remove('active');
+                }
+            });
+    
+            document.querySelectorAll('.card-header').forEach((header, index) => {
+                header.addEventListener('click', function() {
+                    const card = this.closest('.service-card');
+                    const content = card.querySelector('.card-content');
+                    const details = card.querySelector('.service-details');
+                    
+                    document.querySelectorAll('.service-card').forEach((otherCard, otherIndex) => {
+                        if (otherIndex !== index) {
+                            otherCard.classList.remove('active');
+                            otherCard.querySelector('.card-content').classList.remove('active');
+                            otherCard.querySelector('.service-details').classList.remove('active');
+                        }
+                    });
+    
+                    card.classList.toggle('active');
+                    content.classList.toggle('active');
+                    details.classList.toggle('active');
+                });
+            });
+    
+            const menuBtn = document.querySelector('.menu-btn');
+            menuBtn.addEventListener('click', toggleMenu);
+            
+            // Back to top button
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                backToTop.style.opacity = window.scrollY > 300 ? '1' : '0';
+            });
+    
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+    
+            document.getElementById("aboutLink").addEventListener("click", function (e) {
+                e.preventDefault();
+                document.querySelector(".about-section").scrollIntoView({ behavior: "smooth" });
+            });
+            
+            document.querySelectorAll('.service-card').forEach((card, index, allCards) => {
+                const header = card.querySelector('.card-header');
+                const icon = card.querySelector('.toggle-icon');
+            
+                header.addEventListener('click', () => {
+                    const isOpen = card.classList.contains('toggled');
+            
+                    // Close all cards and reset icons
+                    allCards.forEach(c => {
+                        c.classList.remove('toggled');
+                        const i = c.querySelector('.toggle-icon');
+                        if (i) i.textContent = '+';
+                    });
+            
+                    // If it was previously closed, open this one and show "−"
+                    if (!isOpen) {
+                        card.classList.add('toggled');
+                        icon.textContent = '−';
+                    }
+                });
+            });
+        </script>
+    </footer>
+</body>
+</html>
