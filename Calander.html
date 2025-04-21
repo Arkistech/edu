@@ -246,61 +246,56 @@
             text-align: center;
         }
 
-/* Modify the container styles */
-.container {
-    width: 90%;
-    max-width: 900px; /* Reduced from 1200px for better proportions */
-    margin: 100px auto 20px; /* Reduced bottom margin */
-    margin-bottom: 100px;
-    padding: 20px;
-    min-height: auto; /* Remove fixed height */
-}
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 100px auto 20px;
+            margin-bottom: 100px;
+            padding: 20px;
+            min-height: auto;
+        }
 
-/* Adjust scheduler grid */
-.scheduler {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-    min-height: auto; /* Remove fixed height */
-}
+        .scheduler {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            min-height: auto;
+        }
 
-/* Modify calendar section */
-.calendar-section {
-    padding-right: 20px; /* Reduced padding */
-    margin-bottom: 15px;
-}
+        .calendar-section {
+            padding-right: 20px;
+            margin-bottom: 15px;
+        }
 
-/* Adjust date display */
-.selected-date {
-    margin: 15px 0; /* Reduced margin */
-}
+        .selected-date {
+            margin: 15px 0;
+        }
 
-/* Media queries for responsive spacing */
-@media (max-width: 768px) {
-    .container {
-        margin: 60px auto 15px;
-        padding: 15px;
-    }
-    
-    .calendar-section {
-        padding-bottom: 15px; /* Reduced padding */
-    }
-    
-    .scheduler {
-        gap: 15px;
-    }
-}
+        @media (max-width: 768px) {
+            .container {
+                margin: 60px auto 15px;
+                padding: 15px;
+            }
+            
+            .calendar-section {
+                padding-bottom: 15px;
+            }
+            
+            .scheduler {
+                gap: 15px;
+            }
+        }
 
-@media (max-width: 480px) {
-    .container {
-        margin: 50px auto 10px;
-        padding: 10px;
-    }
-    
-    .calendar-header {
-        margin-bottom: 15px;
-    }
-}
+        @media (max-width: 480px) {
+            .container {
+                margin: 50px auto 10px;
+                padding: 10px;
+            }
+            
+            .calendar-header {
+                margin-bottom: 15px;
+            }
+        }
 
         .calendar-section h2 {
             padding-bottom: 20px;
@@ -456,41 +451,6 @@
             color: white;
         }
 
-        @media (max-width: 768px) {
-            .scheduler {
-                grid-template-columns: 1fr;
-            }
-
-            .calendar-section {
-                border-right: none;
-                border-bottom: 1px solid #e5e7eb;
-                padding-right: 0;
-                padding-bottom: 30px;
-            }
-
-            .form-section {
-                padding-left: 0;
-            }
-
-            .footer-columns {
-                flex-direction: column;
-                gap: 40px;
-            }
-            
-            .footer-col {
-                text-align: center;
-            }
-            
-            .social-handle, .contact-method {
-                justify-content: center;
-            }
-            
-            .footer-heading {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
-        }
-
         #backToTop {
             position: fixed;
             bottom: 20px;
@@ -513,6 +473,15 @@
             color: #333;
             white-space: nowrap;
             text-align: left;
+        }
+
+        .browser-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -556,7 +525,9 @@
 
             <div class="form-section">
                 <h2>Appointment Details</h2>
-                <br>
+                <div class="browser-warning">
+                    Note: This will open your email client. Please send the pre-filled email to complete your request.
+                </div>
                 <form id="appointmentForm">
                     <div class="form-group">
                         <label for="name">Full Name</label>
@@ -583,7 +554,7 @@
                     <button type="submit">Schedule Appointment</button>
                 </form>
                 <div id="successMessage" class="message success-message">
-                    Appointment scheduled successfully!
+                    Check your email client to send the appointment request!
                 </div>
                 <div id="errorMessage" class="message error-message"></div>
             </div>
@@ -637,15 +608,14 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-
     <script>
+        // Calendar Logic
         let currentDate = new Date();
         let currentSelectedDate = null;
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         let blockedDates = JSON.parse(localStorage.getItem('blockedDates')) || [];
 
-        // Calendar Elements
         const calendarEl = document.getElementById('calendar');
         const currentMonthEl = document.getElementById('currentMonth');
         const selectedDateEl = document.getElementById('selectedDate');
@@ -656,7 +626,6 @@
         const prevMonthBtn = document.getElementById('prevMonth');
         const nextMonthBtn = document.getElementById('nextMonth');
 
-        // Date Configuration
         const months = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
@@ -666,14 +635,12 @@
             '9:55 AM (Break 1)', '12:10 PM (Break 2)'
         ];
 
-        // Calendar Generation
         function generateCalendar(year, month) {
             calendarEl.innerHTML = '';
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             const startDay = firstDay.getDay();
 
-            // Day Headers
             ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
                 const dayHeader = document.createElement('div');
                 dayHeader.textContent = day;
@@ -681,12 +648,10 @@
                 calendarEl.appendChild(dayHeader);
             });
 
-            // Empty Days
             for (let i = 0; i < startDay; i++) {
                 calendarEl.appendChild(document.createElement('div'));
             }
 
-            // Calendar Days
             for (let day = 1; day <= lastDay.getDate(); day++) {
                 const dayEl = document.createElement('div');
                 dayEl.className = 'calendar-day';
@@ -751,7 +716,7 @@
         }
 
         // Form Handling
-        appointmentForm.addEventListener('submit', async (e) => {
+        appointmentForm.addEventListener('submit', (e) => {
             e.preventDefault();
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
@@ -772,34 +737,19 @@
                 return;
             }
 
-            try {
-                const response = await fetch('/send-email', {                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        issue,
-                        description,
-                        date: currentSelectedDate.getDate(),
-                        month: currentSelectedDate.getMonth() + 1,
-                        year: currentSelectedDate.getFullYear(),
-                        time: selectedTime.textContent
-                    })
-                });
+            const formattedDate = currentSelectedDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to schedule appointment');
-                }
-
-                showSuccess();
-                resetForm();
-            } catch (error) {
-                showError(error.message);
-                if (error.message.includes('authentication')) {
-                    window.open(`http://localhost:3000/auth`, '_blank');
-                }
-            }
+            const subject = `Appointment Request - ${issue}`;
+            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0ADate: ${formattedDate}%0D%0ATime: ${selectedTime.textContent}%0D%0A%0D%0ADescription:%0D%0A${description.replace(/\n/g, '%0D%0A')}`;
+            
+            window.location.href = `mailto:it@arkis.edu.bh?subject=${encodeURIComponent(subject)}&body=${body}`;
+            showSuccess();
+            resetForm();
         });
 
         function validateEmail(email) {
@@ -865,15 +815,6 @@
         backToTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // Admin Controls (keep existing implementation)
-        function initAdminControls() {
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            if (isAdmin) {
-                // Admin panel creation logic
-            }
-        }
-        initAdminControls();
     </script>
 </body>
 </html>
